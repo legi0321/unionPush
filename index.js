@@ -1,6 +1,5 @@
 require('dotenv').config();
 const readline = require('readline');
-const readline = require('readline');
 const open = require('open'); // ⬅️ tambahkan ini
 
 const rl = readline.createInterface({
