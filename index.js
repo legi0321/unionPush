@@ -1,4 +1,4 @@
-const open = require('open');
+const open = require('open'); // versi 8
 const readline = require('readline');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -35,10 +35,11 @@ const ask = (question) => {
     destinationId = '1328';
   }
 
-  const asset = process.env.SEI_NATIVE;
+  const asset = process.env.SEI_NATIVE || '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
+
   const url = `${base}?source=${sourceId}&destination=${destinationId}&asset=${asset}&receiver=${receiver}&amount=${amount}`;
 
-  console.log(`\ud83c\udf10 Membuka browser ke: ${url}`);
+  console.log(`🌐 Membuka browser ke: ${url}`);
 
   try {
     await open(url);
