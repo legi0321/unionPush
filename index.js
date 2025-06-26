@@ -1,6 +1,7 @@
-require('dotenv').config();
+const open = require('open');
 const readline = require('readline');
-const open = require('open'); // ⬅️ tambahkan ini
+const dotenv = require('dotenv');
+dotenv.config();
 
 const rl = readline.createInterface({
   input: process.stdin,
