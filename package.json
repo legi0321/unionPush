@@ -1,0 +1,24 @@
+{
+  "name": "union-transfer",
+  "version": "1.0.0",
+  "description": "Transfer bot for Union SEI ↔ XION",
+  "main": "index.js",
+  "scripts": {
+    "transfer": "node index.js"
+  },
+  "keywords": [
+    "union",
+    "sei",
+    "xion",
+    "transfer",
+    "airdrop"
+  ],
+  "author": "legi0321",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.10.0",
+    "yargs": "^17.7.2"
+  }
+}
