@@ -1,37 +1,49 @@
-
+require('dotenv').config();
 const readline = require('readline');
 const open = require('open');
 
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout,
+  output: process.stdout
 });
 
-function ask(q) {
-  return new Promise((resolve) => rl.question(q, resolve));
-}
+const ask = (question) => {
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
+      resolve(answer.trim());
+    });
+  });
+};
 
 (async () => {
-  console.clear();
-  console.log("=== UNION BRIDGE OPENER ===");
+  console.log('=== UNION TRANSFER SCRIPT ===');
 
-  const direction = await ask("Pilih arah (1 = SEI → XION, 2 = XION → SEI): ");
-  const receiver = await ask("Alamat tujuan: ");
-  const amount = await ask("Jumlah SEI: ");
+  const directionInput = await ask('Pilih arah (1 = SEI → XION, 2 = XION → SEI): ');
+  const direction = directionInput === '1' ? 'sei-to-xion' : 'xion-to-sei';
 
-  let url = '';
+  const receiver = await ask('Alamat tujuan: ');
+  const amount = await ask('Jumlah SEI: ');
 
-  if (direction === '1') {
-    url = `https://app.union.build/transfer?source=1328&destination=xion-testnet-2&asset=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee&receiver=${receiver}&amount=${amount}`;
-  } else if (direction === '2') {
-    url = `https://app.union.build/transfer?source=xion-testnet-2&destination=1328&asset=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee&receiver=${receiver}&amount=${amount}`;
-  } else {
-    console.log("❌ Pilihan tidak valid (1 atau 2 saja).");
-    rl.close();
-    return;
+  const base = 'https://app.union.build/transfer';
+
+  let sourceId = process.env.SOURCE_ID;
+  let destinationId = process.env.DESTINATION_ID;
+
+  if (direction === 'xion-to-sei') {
+    sourceId = 'xion-testnet-2';
+    destinationId = '1328';
   }
 
-  console.log(`🌐 Membuka browser ke: ${url}`);
-  await open(url);
-  rl.close();
+  const asset = process.env.SEI_NATIVE;
+  const url = `${base}?source=${sourceId}&destination=${destinationId}&asset=${asset}&receiver=${receiver}&amount=${amount}`;
+
+  console.log(`\ud83c\udf10 Membuka browser ke: ${url}`);
+
+  try {
+    await open(url);
+  } catch (err) {
+    console.error('Gagal membuka browser:', err.message);
+  } finally {
+    rl.close();
+  }
 })();
